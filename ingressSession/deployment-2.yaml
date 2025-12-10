@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-2
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+
+  template:
+    metadata:
+      labels:
+        app: app2
+
+    spec:
+      containers:
+      - name: app2-container
+        image: hashicorp/http-echo
+        args:
+        - "-text=welcome app from app2 Deployment pod"
+
+        ports:
+        - containerPort: 5678

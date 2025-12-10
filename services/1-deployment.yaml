@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-app
+  labels:
+    app: nginx
+
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      labels:
+        app: nginx
+
+    spec:
+      containers:
+      - name: container-nginx
+        image: nginx:1.27-alpine
+
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+
+          limits:
+            cpu: "100m"
+            memory: "128Mi"

@@ -1,0 +1,66 @@
+replicaCount: 1
+
+image:
+  repository: hashicorp/http-echo
+  tag: "latest"
+  pullPolicy: IfNotPresent
+  args:
+  - "-text=Hello from mywebapp"
+  - "-listen=:5678"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5678
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env: []
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  className: "nginx"
+
+  hosts:
+  - host: ab.example.com
+    paths:
+    - path: /
+      pathType: Prefix
+
+  tls: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+  automount: true
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+  - name: gateway
+    sectionName: http
+  hostnames:
+  - example.com
+  rules: []
