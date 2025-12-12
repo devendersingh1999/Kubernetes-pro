@@ -47,5 +47,8 @@ spec:
   - port: 80
     targetPort: 80
 
+# kubectl create ns as
 #kubectl apply -f deployment-1.yaml
 #kubectl apply -f hpa.yaml
+# kubectl delete deployment <deploymentName> -n as
+# kubectl delete hpa <hpadeployment> -n as
